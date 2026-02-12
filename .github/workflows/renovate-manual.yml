@@ -1,0 +1,24 @@
+name: Run Renovate (manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    name: Run Renovate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Renovate
+        uses: renovatebot/github-action@v40
+        with:
+          # Crear un Personal Access Token con scope 'repo' en GitHub Settings → Developer settings → Personal access tokens
+          # Añadir en Settings → Secrets and variables → Actions → New repository secret: RENOVATE_TOKEN
+          token: ${{ secrets.RENOVATE_TOKEN }}
+          configurationFile: renovate.json
