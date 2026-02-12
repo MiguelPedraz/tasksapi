@@ -196,22 +196,39 @@ Every Monday:
 
 ## 🚀 Automation Setup
 
-### Enable Renovate
+### 🤖 Enable Renovate Bot
 
-1. Install Renovate GitHub App: https://github.com/apps/renovate
-2. Grant access to your repository
-3. Renovate will automatically create PRs based on `renovate.json`
+1. 🌐 **Visit:** https://github.com/apps/renovate
+2. 🟢 **Click:** "Install" button (top right)
+3. 🎯 **Select repositories:**
+   - Choose "Only select repositories"
+   - Select your `tasksapi` repository
+4. 🔐 **Authorize:** Click "Install & Authorize"
+5. ⏳ **Wait:** 5-10 minutes for Renovate to scan
+6. 📬 **Merge onboarding PR:** Renovate will create "Configure Renovate" PR
+7. 🎉 **Done:** Renovate will automatically create PRs based on `renovate.json`
 
-### Enable Dependabot
+### 🐛 Enable Dependabot
 
-Dependabot is automatically enabled for GitHub repositories with `.github/dependabot.yml`.
+✅ **Automatically enabled** for GitHub repositories with `.github/dependabot.yml`
 
-### Enable Auto-merge
+**Verification steps:**
+1. 🔍 Go to your repository on GitHub
+2. 📊 Click `Insights` → `Dependency graph`
+3. 🐛 Click `Dependabot` tab
+4. ✅ You should see "Dependabot is enabled"
 
-1. Go to repository Settings → General
-2. Enable "Allow auto-merge"
-3. Configure branch protection rules
-4. GitHub Actions workflow will handle auto-merge
+### ⚡ Enable Auto-merge (Optional but Recommended)
+
+1. ⚙️ **Go to repository Settings → General**
+2. ✅ **Enable these options:**
+   - ☑️ "Allow auto-merge"
+   - ☑️ "Automatically delete head branches"
+   - ☑️ "Allow squash merging"
+3. 🔒 **Configure branch protection rules:**
+   - Require status checks before merging
+   - Require branches to be up to date
+4. 🤖 **GitHub Actions workflow will handle auto-merge** for safe updates
 
 ## 📝 Version Catalog Structure
 

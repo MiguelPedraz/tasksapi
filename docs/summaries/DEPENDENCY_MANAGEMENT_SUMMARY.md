@@ -107,30 +107,45 @@ app/build/reports/dependency-check-report.html
 
 **✅ Configured** (`renovate.json`)
 
-**Features:**
-- Weekly dependency checks
-- Auto-groups related dependencies (Spring Boot, Testing, Database)
-- Auto-merge for patch/minor updates
-- Labels PRs with "dependencies" and "automated"
+**🎯 Branch Strategy:** PRs target `develop` branch (not `main`)
 
-**Activation:**
-1. Install Renovate GitHub App
-2. Grant repository access
-3. Renovate will automatically create PRs
+**🚀 Features:**
+- 📅 Weekly dependency checks
+- 📦 Auto-groups related dependencies (Spring Boot, Testing, Database)
+- ✅ Auto-merge for patch/minor updates after tests pass
+- 🏷️ Labels PRs with "dependencies" and "automated"
+- 🔄 Automatic rebase when develop branch changes
+- 🔒 Security vulnerability alerts
+- 🌿 Creates PRs against `develop` for safe testing before production
+
+**🔧 Activation:**
+1. 🌐 **Install Renovate GitHub App:** https://github.com/apps/renovate
+2. 🎯 **Select your repository:** Choose `tasksapi` or all repos
+3. 🔐 **Grant repository access:** Click "Install & Authorize"
+4. ⏳ **Wait 5-10 minutes:** Renovate will scan your project
+5. 📬 **Merge onboarding PR:** Renovate creates initial "Configure Renovate" PR
+6. 🎉 **Start receiving PRs:** Automated updates will begin!
 
 ### B. Dependabot
 
 **✅ Configured** (`.github/dependabot.yml`)
 
-**Features:**
-- Weekly updates on Mondays at 3 AM UTC
-- Groups dependencies by category
-- Separate PRs for GitHub Actions
-- Automatic semantic commit messages
+**🎯 Branch Strategy:** PRs target `develop` branch (not `main`)
 
-**Activation:**
-- Automatically enabled for GitHub repositories
-- Requires `.github/dependabot.yml` file (already created)
+**🚀 Features:**
+- 📅 Weekly updates on Mondays at 3 AM UTC
+- 📚 Groups dependencies by category
+- 🐛 Separate PRs for GitHub Actions workflows
+- 📝 Automatic semantic commit messages
+- 🔒 Security alerts and automatic security updates
+- 🏷️ Clear labels on each PR
+- 🌿 Creates PRs against `develop` for safe testing before production
+
+**⚙️ Activation:**
+- ✅ **Automatically enabled** for GitHub repositories
+- 📝 **Requires** `.github/dependabot.yml` file (already created)
+- 🔔 **Optional:** Configure email notifications in GitHub settings
+- 🔍 **Check:** Go to `Insights` → `Dependency graph` → `Dependabot` to verify
 
 ---
 
@@ -293,23 +308,67 @@ cd tasksapi
 
 ---
 
+## 🌿 Branch Strategy & Workflow
+
+### Git Flow Model (Recommended)
+
+```
+main (producción) ←──────────────── release/merge ← develop (desarrollo)
+                                                           ↑
+                                                           │
+                                                    Renovate/Dependabot
+                                                         PRs aquí
+```
+
+**📋 Configuración actual:**
+- ✅ Renovate crea PRs contra: `develop`
+- ✅ Dependabot crea PRs contra: `develop`
+- 🧪 Tests se ejecutan en `develop`
+- ✅ Después de validar, merge `develop` → `main`
+
+**🎯 Beneficios:**
+- 🛡️ `main` siempre está estable (producción)
+- 🧪 `develop` es donde se prueban actualizaciones
+- 🚀 Control total antes de llevar a producción
+- 🔄 Rollback fácil si algo falla
+
+**📖 Flujo de trabajo:**
+```bash
+1. 📬 Renovate/Dependabot crea PR → develop
+2. 🧪 CI/CD ejecuta tests automáticamente
+3. ✅ Auto-merge si es patch/minor (opcional)
+4. 👀 Revisar si es major update
+5. 🎯 Merge PR → develop
+6. 🧪 Probar en develop/staging
+7. 🚀 Cuando esté listo: merge develop → main (producción)
+```
+
+---
+
 ## 🔮 Next Steps
 
-1. **Enable Renovate Bot:**
+### 1️⃣ **Enable Renovate Bot:**
    ```
-   Go to: https://github.com/apps/renovate
-   Install on your repository
+   🌐 Visit: https://github.com/apps/renovate
+   🟢 Click: "Install" button
+   🎯 Select: Your repository (tasksapi)
+   🔐 Authorize: Grant permissions
+   ⏳ Wait: 5-10 minutes for first PR
    ```
 
-2. **Review Weekly Updates:**
-   - Check Renovate/Dependabot PRs every Monday
-   - Review GitHub Actions workflow results
-   - Address any security alerts
+### 2️⃣ **Review Weekly Updates:**
+   - 📬 Check Renovate/Dependabot PRs every Monday
+   - 🧪 Verify all tests pass before merging
+   - 👀 Review GitHub Actions workflow results
+   - 🔒 Address any security alerts immediately
+   - 📊 Monitor dependency update dashboard
 
-3. **Customize as Needed:**
-   - Adjust update frequency in `renovate.json`
-   - Modify auto-merge rules
-   - Add suppressions for false positives
+### 3️⃣ **Customize as Needed:**
+   - 🕐 Adjust update frequency in `renovate.json`
+   - ⚙️ Modify auto-merge rules for your workflow
+   - 🚫 Add suppressions for false positives in `dependency-check-suppression.xml`
+   - 📦 Configure grouping strategies for better PR organization
+   - 🌙 Change schedule to match your team's availability
 
 ---
 

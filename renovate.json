@@ -3,6 +3,9 @@
   "extends": [
     "config:base"
   ],
+"baseBranches": [
+    "develop"
+],
   "ignoreDeps": [],
   "enabledManagers": ["gradle", "gradle-wrapper"],
   "packageRules": [

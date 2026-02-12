@@ -65,52 +65,116 @@ git push -u origin main
 
 ### 📋 Paso 2: Instalar Renovate Bot
 
-1. **Visita:** https://github.com/apps/renovate
-2. **Click** en el botón verde `Install`
-3. **Selecciona** una opción:
-   - **Recomendado:** "Only select repositories" → Elige `tasksapi`
-   - O "All repositories" (si confías en Renovate para todos tus repos)
-4. **Click** `Install & Authorize`
-5. **Espera** 5-10 minutos
+#### 🌐 **1. Visita la página de Renovate:**
+```
+https://github.com/apps/renovate
+```
+
+#### 🟢 **2. Click en el botón verde `Install`**
+- Aparecerá en la parte superior derecha de la página
+- Si ya lo instalaste antes, verás `Configure` en su lugar
+
+#### 🎯 **3. Selecciona repositorios:**
+- ✅ **Recomendado:** "Only select repositories"
+  - Click en el dropdown
+  - Busca y selecciona: `tasksapi`
+  - Esto mantiene control sobre qué repos usa Renovate
+  
+- 🌍 **Alternativa:** "All repositories"
+  - Solo si confías en Renovate para todos tus proyectos
+  - Renovate seguirá solo repos con `renovate.json`
+
+#### 🔐 **4. Click en `Install & Authorize`**
+- Renovate pedirá permisos para:
+  - ✅ Leer código (detectar dependencias)
+  - ✅ Crear branches (para PRs)
+  - ✅ Crear PRs (actualizaciones)
+  - ✅ Leer/escribir checks (tests)
+
+#### ⏳ **5. Espera el onboarding (5-10 minutos)**
+- Renovate escaneará tu proyecto
+- Detectará todas las dependencias
+- Creará el PR inicial de configuración
 
 ### 📋 Paso 3: Onboarding PR
 
-**Renovate creará automáticamente:**
+#### 🎉 **Renovate creará automáticamente su primer PR:**
 
 ```
-PR #1: "Configure Renovate"
-Título: Configure Renovate
-Labels: renovate, dependencies
-Estado: Lista para merge
+🔷 PR #1: "Configure Renovate"
+   Título:  Configure Renovate
+   Labels:  🏷️ renovate, dependencies
+   Estado:  ✅ Lista para merge
+   Author:  🤖 renovate[bot]
 ```
 
-**Este PR incluirá:**
-- 📊 Lista de todas las dependencias encontradas
-- 📈 Actualizaciones disponibles
-- ⚙️ Configuración que usará (desde renovate.json)
-- 🔍 Previsualización de futuros PRs
+#### 📦 **Este PR incluirá:**
+- 📊 **Dependencias detectadas:** Lista completa de todo lo que encontró
+- 📈 **Actualizaciones disponibles:** Qué se puede actualizar ahora
+- ⚙️ **Configuración aplicada:** Preview de cómo trabajará (desde `renovate.json`)
+- 🔍 **Previsualización:** Ejemplos de futuros PRs que creará
+- 📝 **Dashboard:** Link al dashboard de Renovate con issues detectadas
 
-**Acción requerida:**
+#### 🚀 **Acción requerida (mergearlo):**
+
+#### 🖱️ **Opción A: Desde GitHub UI (Recomendado):**
+1. 🌐 Ve a: `https://github.com/TU-USUARIO/tasksapi/pulls`
+2. 👆 Click en el PR "Configure Renovate"
+3. 📖 Lee el contenido (opcional pero recomendado)
+4. 🟢 Click en botón verde **"Merge pull request"**
+5. ✅ Click en **"Confirm merge"**
+6. 🗑️ Click en **"Delete branch"** (limpieza)
+
+#### 💻 **Opción B: Desde línea de comandos:**
 ```bash
-# Opción A: Desde GitHub UI
-# Click en "Merge pull request" → "Confirm merge"
-
-# Opción B: Desde línea de comandos
+# Actualizar referencias remotas
 git fetch origin
-git checkout -b renovate/configure
-git merge origin/renovate/configure
+
+# Ver el PR localmente
+git checkout renovate/configure
+git log  # Ver commits del PR
+
+# Mergear a main
+git checkout main
+git merge renovate/configure
 git push origin main
+
+# Limpiar branch
+git branch -d renovate/configure
+git push origin --delete renovate/configure
 ```
 
-### 📋 Paso 4: Configurar Auto-merge (Opcional)
+### 📋 Paso 4: Configurar Auto-merge (Opcional pero Recomendado)
 
-Para que Renovate pueda mergear automáticamente patches/minor:
+#### 🎯 **¿Por qué habilitar auto-merge?**
+- ⚡ Actualizaciones de seguridad se aplican automáticamente
+- 🛡️ Patches y minor versions son typicalidad seguros
+- ⏰ No necesitas revisar cada actualización pequeña
+- 🧪 Solo se mergea si todos los tests pasan
 
-#### **En GitHub:**
-1. Ve a: `https://github.com/TU-USUARIO/tasksapi/settings`
-2. Scroll hasta **"Pull Requests"**
-3. ✅ Marca: **"Allow auto-merge"**
-4. ✅ Marca: **"Automatically delete head branches"** (limpieza automática)
+#### ⚙️ **En GitHub (Habilitar la funcionalidad):**
+
+1. 🌐 **Ve a configuración del repo:**
+   ```
+   https://github.com/TU-USUARIO/tasksapi/settings
+   ```
+
+2. 📜 **Scroll hasta la sección "Pull Requests"**
+
+3. ✅ **Activa estas opciones:**
+   - ☑️ **"Allow auto-merge"**
+     - Permite que PRs se mergeen automáticamente
+     - Necesario para que Renovate use auto-merge
+   
+   - ☑️ **"Automatically delete head branches"** 
+     - Limpia branches después de merge
+     - Mantiene el repo ordenado
+   
+   - ☑️ **"Allow squash merging"** (si no está activo)
+     - Renovate usa squash merge por defecto
+     - Mantiene historial limpio
+
+4. 💾 **Guarda cambios** (scroll abajo y click en "Save")
 
 #### **Verificar en renovate.json:**
 ```json
@@ -126,27 +190,59 @@ Para que Renovate pueda mergear automáticamente patches/minor:
 }
 ```
 
-### 📋 Paso 5: Esperar los PRs
+### 📋 Paso 5: Esperar los PRs de Actualización
 
-**Después del onboarding, Renovate:**
-
-```
-Horario: Lunes-Viernes 10pm - 5am
-Máximo PRs concurrentes: 5
-```
-
-**Ejemplo de PRs que recibirás:**
+#### 🕐 **Horario de trabajo de Renovate:**
 
 ```
-PR #2: Update Spring Boot Dependencies (grouped)
-- spring-boot: 3.3.0 → 3.3.1
-- spring-boot-starter-web: 3.3.0 → 3.3.1
-Status: ✅ Auto-merge after tests pass
+🌙 Horario:  Lunes-Viernes, 10pm - 5am (no molesta durante el día)
+🔢 Límite:   Máximo 5 PRs concurrentes
+📊 Rate:     1 PR cada 5 minutos (evita spam)
+🔄 Rebase:   Automático si main cambia
+```
 
-PR #3: Update Testing Dependencies (grouped)
-- junit-jupiter: 5.12.1 → 5.12.2
-- mockito-core: 5.15.2 → 5.15.3
-Status: ✅ Auto-merge after tests pass
+#### 📬 **Ejemplo de PRs que recibirás:**
+
+##### 🟢 **PR #2: Update Spring Boot Dependencies (grouped)**
+```diff
+📦 Grupo: Spring Boot
+🏷️ Labels: renovate, dependencies, spring-boot
+
++ spring-boot: 3.3.0 → 3.3.1
++ spring-boot-starter-web: 3.3.0 → 3.3.1
++ spring-boot-starter-data-jpa: 3.3.0 → 3.3.1
+
+✅ Status: Auto-merge after tests pass
+🧪 Checks: All passing ✓
+⏰ Auto-merge: In 2 hours (stability period)
+```
+
+##### 🟢 **PR #3: Update Testing Dependencies (grouped)**
+```diff
+📦 Grupo: Testing
+🏷️ Labels: renovate, dependencies, testing
+
++ junit-jupiter: 5.12.1 → 5.12.2
++ mockito-core: 5.15.2 → 5.15.3
++ assertj-core: 3.26.3 → 3.27.0
+
+✅ Status: Auto-merge after tests pass
+🧪 Checks: All passing ✓
+⏰ Auto-merge: In 2 hours (stability period)
+```
+
+##### 🔴 **PR #4: Update dependency org.postgresql:postgresql [MAJOR]**
+```diff
+📦 Actualización: MAJOR version
+🏷️ Labels: renovate, dependencies, major
+⚠️ Requiere: Revisión manual
+
++ postgresql: 42.7.5 → 43.0.0
+
+❌ Status: Manual review required
+📝 Notes: Breaking changes possible
+🔍 Changelog: https://github.com/pgjdbc/pgjdbc/releases/tag/43.0.0
+```
 
 PR #4: Update dependency org.postgresql:postgresql to v42.7.10
 Status: ✅ Auto-merge after tests pass
