@@ -1,0 +1,23 @@
+name: Run Renovate (manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  renovate:
+    name: Run Renovate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Renovate
+        uses: renovate/renovate@latest
+        with:
+          # Guardar un Personal Access Token (repo scope) en Settings -> Secrets con el nombre RENOVATE_TOKEN.
+          token: ${{ secrets.RENOVATE_TOKEN }}
+          configFile: .github/renovate.json
