@@ -8,7 +8,7 @@ updates:
       interval: "weekly"
       day: "monday"
       time: "03:00"
-      timezone: "UTC"
+      timezone: "Europe/Madrid"
     open-pull-requests-limit: 10
     labels:
       - "dependencies"

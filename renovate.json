@@ -36,7 +36,7 @@
   "labels": ["dependencies", "automated"],
   "assignees": ["@me"],
   "schedule": ["after 10pm every weekday", "before 5am every weekday"],
-  "timezone": "UTC",
+  "timezone": "Europe/Madrid",
   "prConcurrentLimit": 5,
   "prCreation": "immediate",
   "rebaseWhen": "behind-base-branch",
