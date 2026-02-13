@@ -27,7 +27,7 @@ micrometer = "1.13.1"
 lombok = "1.18.32"
 
 # Utilities
-guava = "33.4.6-jre"
+guava = "33.5.0-jre"
 
 [libraries]
 # Spring Boot Starters (managed by Spring Boot BOM)
