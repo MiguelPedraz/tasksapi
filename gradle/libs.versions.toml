@@ -18,7 +18,7 @@ testcontainers = "1.19.8"
 rest-assured = "5.4.0"
 
 # Documentation - Latest Stable
-springdoc-openapi = "2.5.0"
+springdoc-openapi = "3.0.1"
 
 # Observability - Latest Stable
 micrometer = "1.13.1"
