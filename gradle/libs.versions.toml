@@ -8,8 +8,8 @@ spring-boot = "3.3.0"
 spring-dependency-management = "1.1.5"
 
 # Databases - Latest Stable
-postgresql = "42.7.3"
-h2 = "2.2.224"
+postgresql = "42.7.10"
+h2 = "2.4.240"
 
 # Testing - Latest Stable
 junit-jupiter = "5.12.1"
