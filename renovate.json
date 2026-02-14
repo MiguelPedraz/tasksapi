@@ -1,15 +1,43 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
+],
+"platform": "github",
+"autodiscover": true,
+"autodiscoverFilter": [
+    "MiguelPedraz/tasksapi"
   ],
 "baseBranches": [
     "develop"
 ],
+"gitAuthor": "Renovate Bot <bot@renovateapp.com>",
   "ignoreDeps": [],
-  "enabledManagers": ["gradle", "gradle-wrapper"],
+"ignoreUnstable": true,
+"respectLatest": true,
+"enabledManagers": [
+    "gradle",
+    "gradle-wrapper",
+    "github-actions"
+],
+"hostRules": [
+    {
+        "matchHost": "https://repo1.maven.org",
+        "description": "Maven Central (Sonatype CDN) - Primary source for Maven dependencies"
+    }
+],
   "packageRules": [
     {
+    "description": "Ignore non-stable versions globally (all managers)",
+    "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+    ],
+    "allowedVersions": "!/^.*(-alpha|-beta|-rc|-snapshot|-dev|-pre|-milestone|-m\\d+).*$/i"
+},
+{
+    "description": "Auto-merge minor/patch updates for all Maven dependencies",
       "matchDatasources": ["maven"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
@@ -17,24 +45,68 @@
       "automergeStrategy": "squash"
     },
     {
+    "description": "Group Spring Framework updates",
       "matchDatasources": ["maven"],
-      "matchPackagePatterns": ["^org.springframework.boot"],
+    "matchPackagePrefixes": [
+        "org.springframework"
+    ],
       "schedule": ["before 3am on Monday"],
-      "groupName": "Spring Boot"
+    "groupName": "Spring Framework"
     },
     {
+    "description": "Group Testing frameworks",
       "matchDatasources": ["maven"],
-      "matchPackagePatterns": ["^org.junit", "^org.mockito", "^org.testcontainers"],
+    "matchPackagePrefixes": [
+        "org.junit",
+        "org.mockito",
+        "org.testcontainers",
+        "io.rest-assured"
+    ],
       "groupName": "Testing Dependencies"
     },
     {
+    "description": "Group Database drivers",
+    "matchDatasources": [
+        "maven"
+    ],
+    "matchPackagePrefixes": [
+        "org.postgresql",
+        "com.h2database"
+    ],
+    "groupName": "Database Drivers"
+},
+{
+    "description": "Group Observability tools",
       "matchDatasources": ["maven"],
-      "matchPackagePatterns": ["^org.postgresql", "^com.h2database"],
-      "groupName": "Database Dependencies"
+    "matchPackagePrefixes": [
+        "io.micrometer",
+        "org.springdoc"
+    ],
+    "groupName": "Observability & Documentation"
+},
+{
+    "description": "Group Build tools and Gradle plugins",
+    "matchManagers": [
+        "gradle"
+    ],
+    "matchDepTypes": [
+        "plugin"
+    ],
+    "groupName": "Build Tools & Plugins"
+},
+{
+    "description": "Stable releases for GitHub Actions",
+    "matchManagers": [
+        "github-actions"
+    ],
+    "pinDigests": false,
+    "semanticCommits": "enabled"
     }
   ],
   "labels": ["dependencies", "automated"],
-  "assignees": ["@me"],
+"assignees": [
+    "@MiguelPedraz"
+],
   "schedule": ["after 10pm every weekday", "before 5am every weekday"],
   "timezone": "Europe/Madrid",
   "prConcurrentLimit": 5,
