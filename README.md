@@ -5,6 +5,7 @@
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-18-blue)
 ![Architecture](https://img.shields.io/badge/Architecture-Hexagonal-purple)
 ![Coverage](https://img.shields.io/badge/Coverage-100%25-success)
+![CI](https://img.shields.io/github/actions/workflow/status/MiguelPedraz/tasksapi/ci.yml?branch=develop&label=CI)
 ![Dependencies](https://img.shields.io/badge/dependencies-up%20to%20date-brightgreen)
 
 Task Management API built with Hexagonal Architecture (Ports & Adapters), following SOLID principles, DDD, and Event-Driven design patterns.
@@ -236,6 +237,39 @@ This project enforces **100% code coverage** using JaCoCo.
 Coverage reports are generated at:
 - HTML: `build/reports/jacoco/test/html/index.html`
 - XML: `build/reports/jacoco/test/jacocoTestReport.xml`
+
+## 🔄 CI/CD
+
+This project uses **GitHub Actions** for continuous integration and deployment.
+
+### Workflows
+
+#### CI - Build and Test (`ci.yml`)
+Runs on every push to `develop` branch and on pull requests:
+- ✅ Builds the project with Gradle
+- ✅ Runs all tests
+- ✅ Generates JaCoCo coverage reports
+- ✅ Verifies 100% code coverage
+- ✅ Uploads test results and coverage reports as artifacts
+
+#### Dependency Updates Check (`dependency-check.yml`)
+Runs on push to `develop`, on schedule (Monday 3 AM), and manually:
+- 🔍 Checks for available dependency updates
+- 🔒 Scans for security vulnerabilities with OWASP Dependency Check
+- 📊 Generates and uploads reports as artifacts
+
+#### Auto-merge Dependencies (`auto-merge-dependencies.yml`)
+Runs on pull requests from dependency bots:
+- 🤖 Automatically tests dependency updates from Renovate/Dependabot
+- ✅ Runs full test suite with coverage verification
+- 🔒 Performs security scanning
+- 🚀 Auto-merges safe updates (patch/minor versions)
+
+### Manual Triggers
+
+You can manually trigger workflows from the Actions tab in GitHub:
+- **Dependency Check**: Check for updates and vulnerabilities on demand
+- **Renovate**: Manually run Renovate to create/update dependency PRs
 
 ## 🔄 Dependency Management
 
