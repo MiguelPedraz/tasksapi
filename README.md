@@ -253,7 +253,7 @@ Runs on every push to `develop` branch and on pull requests:
 - ✅ Uploads test results and coverage reports as artifacts
 
 #### Dependency Updates Check (`dependency-check.yml`)
-Runs on push to `develop`, on schedule (Monday 3 AM), and manually:
+Runs on push to `develop`, on schedule (Monday 3 AM UTC), and manually:
 - 🔍 Checks for available dependency updates
 - 🔒 Scans for security vulnerabilities with OWASP Dependency Check
 - 📊 Generates and uploads reports as artifacts

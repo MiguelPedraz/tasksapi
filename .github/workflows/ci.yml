@@ -32,16 +32,12 @@ jobs:
         run: ./gradlew build --no-daemon
         working-directory: tasksapi
       
-      - name: Run tests
-        run: ./gradlew test --no-daemon
-        working-directory: tasksapi
-      
       - name: Generate JaCoCo coverage report
-        run: ./gradlew jacocoTestReport
+        run: ./gradlew jacocoTestReport --no-daemon
         working-directory: tasksapi
       
       - name: Verify code coverage
-        run: ./gradlew jacocoTestCoverageVerification
+        run: ./gradlew jacocoTestCoverageVerification --no-daemon
         working-directory: tasksapi
       
       - name: Upload test results
