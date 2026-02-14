@@ -4,8 +4,8 @@
 
 [versions]
 # Spring Framework - Latest LTS
-spring-boot = "3.3.0"
-spring-dependency-management = "1.1.5"
+spring-boot = "3.4.2"
+spring-dependency-management = "1.1.7"
 
 # Databases - Latest Stable
 postgresql = "42.7.3"
