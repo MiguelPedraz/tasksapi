@@ -26,20 +26,16 @@ jobs:
       
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        working-directory: tasksapi
       
       - name: Run tests
         run: ./gradlew clean test
-        working-directory: tasksapi
       
       - name: Run JaCoCo coverage verification
         run: ./gradlew jacocoTestCoverageVerification
-        working-directory: tasksapi
         continue-on-error: true
       
       - name: Run security scan
         run: ./gradlew dependencyCheckAnalyze
-        working-directory: tasksapi
         continue-on-error: true
       
       - name: Check PR metadata

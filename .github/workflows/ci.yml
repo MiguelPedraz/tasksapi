@@ -28,26 +28,22 @@ jobs:
       
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        working-directory: tasksapi
       
       - name: Build with Gradle
         run: ./gradlew build --no-daemon
-        working-directory: tasksapi
       
       - name: Generate JaCoCo coverage report
         run: ./gradlew jacocoTestReport --no-daemon
-        working-directory: tasksapi
       
       - name: Verify code coverage
         run: ./gradlew jacocoTestCoverageVerification --no-daemon
-        working-directory: tasksapi
       
       - name: Upload test results
         uses: actions/upload-artifact@v4
         if: always()
         with:
           name: test-results
-          path: tasksapi/app/build/reports/tests/test/
+          path: app/build/reports/tests/test/
           retention-days: 7
       
       - name: Upload coverage report
@@ -55,5 +51,5 @@ jobs:
         if: always()
         with:
           name: coverage-report
-          path: tasksapi/app/build/reports/jacoco/test/html/
+          path: app/build/reports/jacoco/test/html/
           retention-days: 7
