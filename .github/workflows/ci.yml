@@ -1,0 +1,59 @@
+name: CI - Build and Test
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'gradle'
+      
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+        working-directory: tasksapi
+      
+      - name: Build with Gradle
+        run: ./gradlew build --no-daemon
+        working-directory: tasksapi
+      
+      - name: Generate JaCoCo coverage report
+        run: ./gradlew jacocoTestReport --no-daemon
+        working-directory: tasksapi
+      
+      - name: Verify code coverage
+        run: ./gradlew jacocoTestCoverageVerification --no-daemon
+        working-directory: tasksapi
+      
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: tasksapi/app/build/reports/tests/test/
+          retention-days: 7
+      
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: tasksapi/app/build/reports/jacoco/test/html/
+          retention-days: 7

@@ -1,6 +1,9 @@
 name: Dependency Updates Check
 
 on:
+  push:
+    branches:
+      - develop
   schedule:
     - cron: '0 3 * * 1'  # Every Monday at 3 AM UTC
   workflow_dispatch:  # Allow manual trigger
