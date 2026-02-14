@@ -26,22 +26,19 @@ jobs:
       
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        working-directory: tasksapi
       
       - name: Check for dependency updates
         run: ./gradlew dependencyUpdates
-        working-directory: tasksapi
       
       - name: Upload dependency updates report
         uses: actions/upload-artifact@v4
         with:
           name: dependency-updates-report
-          path: tasksapi/app/build/dependencyUpdates/report.html
+          path: app/build/dependencyUpdates/report.html
           retention-days: 30
       
       - name: Check for security vulnerabilities
         run: ./gradlew dependencyCheckAnalyze
-        working-directory: tasksapi
         continue-on-error: true
       
       - name: Upload security report
@@ -49,7 +46,7 @@ jobs:
         if: always()
         with:
           name: dependency-check-report
-          path: tasksapi/app/build/reports/dependency-check-report.html
+          path: app/build/reports/dependency-check-report.html
           retention-days: 30
       
       - name: Comment on commit with results
@@ -58,7 +55,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const reportPath = 'tasksapi/app/build/dependencyUpdates/report.txt';
+            const reportPath = 'app/build/dependencyUpdates/report.txt';
             
             if (fs.existsSync(reportPath)) {
               const report = fs.readFileSync(reportPath, 'utf8');
