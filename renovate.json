@@ -51,18 +51,126 @@
         "org.springframework"
     ],
       "schedule": ["before 3am on Monday"],
-    "groupName": "Spring Framework"
-    },
-    {
-    "description": "Group Testing frameworks",
-      "matchDatasources": ["maven"],
-    "matchPackagePrefixes": [
-        "org.junit",
-        "org.mockito",
-        "org.testcontainers",
-        "io.rest-assured"
+    "groupName": "Spring Framework",
+    "prBodyNotes": [
+        "📦 **Spring Framework Dependencies Cross-Check:**",
+        "",
+        "Verify compatibility with related dependencies in `libs.versions.toml`:",
+        "- `spring-boot` → Current: 4.0.2",
+        "- `spring-dependency-management` → Current: 1.1.7",
+        "",
+        "🔗 [Spring Boot Release Notes](https://github.com/spring-projects/spring-boot/releases)",
+        "🔗 [Compatibility Matrix](https://spring.io/projects/spring-boot#support)"
+    ]
+},
+{
+    "description": "Testcontainers - Allow major updates but require manual review",
+    "matchDatasources": [
+        "maven"
     ],
-      "groupName": "Testing Dependencies"
+    "matchPackageNames": [
+        "org.testcontainers:testcontainers",
+        "org.testcontainers:junit-jupiter",
+        "org.testcontainers:postgresql"
+    ],
+    "matchUpdateTypes": [
+        "major"
+    ],
+    "automerge": false,
+    "stabilityDays": 3,
+    "groupName": "Testcontainers Major Update",
+    "groupSlug": "testcontainers-major",
+    "prPriority": 10,
+    "prBodyNotes": [
+        "⚠️ **CRITICAL: Multi-Module Dependency Check**",
+        "",
+        "This PR updates **Testcontainers** which has multiple modules defined in `libs.versions.toml` using the **same version variable**:",
+        "",
+        "```toml",
+        "testcontainers = \"{{{newVersion}}}\"  # Shared version for all modules",
+        "```",
+        "",
+        "### 🔍 Affected Modules (All must exist in Maven Central):",
+        "",
+        "| Module | Package Name | Status Link |",
+        "|--------|--------------|-------------|",
+        "| testcontainers-core | `org.testcontainers:testcontainers` | [Verify v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) |",
+        "| testcontainers-junit | `org.testcontainers:junit-jupiter` | [Verify v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) |",
+        "| testcontainers-postgresql | `org.testcontainers:postgresql` | [Verify v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) |",
+        "",
+        "### ❌ Known Issue - Version {{{newVersion}}}:",
+        "```",
+        "Could not find org.testcontainers:junit-jupiter:{{{newVersion}}}",
+        "Could not find org.testcontainers:postgresql:{{{newVersion}}}",
+        "```",
+        "",
+        "### ✅ Merge Checklist:",
+        "- [ ] All 3 modules exist with version {{{newVersion}}} in Maven Central",
+        "- [ ] Build passes in CI/CD",
+        "- [ ] No dependency resolution errors in logs",
+        "",
+        "**⚠️ If ANY module is missing, DO NOT MERGE - wait for synchronized release**"
+    ],
+    "prFooter": "📦 [View all Testcontainers artifacts](https://mvnrepository.com/artifact/org.testcontainers) | 🔗 [Release Notes](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}})"
+},
+{
+    "description": "Testcontainers - Auto-merge minor/patch updates",
+    "matchDatasources": [
+        "maven"
+    ],
+    "matchPackageNames": [
+        "org.testcontainers:testcontainers",
+        "org.testcontainers:junit-jupiter",
+        "org.testcontainers:postgresql"
+    ],
+    "matchUpdateTypes": [
+        "minor",
+        "patch"
+    ],
+    "automerge": true,
+    "groupName": "Testcontainers",
+    "groupSlug": "testcontainers",
+    "prBodyNotes": [
+        "📦 **Testcontainers Multi-Module Update**",
+        "",
+        "All modules use shared version in `libs.versions.toml`:",
+        "- `org.testcontainers:testcontainers`",
+        "- `org.testcontainers:junit-jupiter`",
+        "- `org.testcontainers:postgresql`",
+        "",
+        "Auto-merge enabled - patch/minor updates are usually safe ✅"
+    ]
+},
+{
+    "description": "Group Testing frameworks with module dependency info",
+      "matchDatasources": ["maven"],
+    "matchPackageNames": [
+        "org.junit.jupiter:junit-jupiter",
+        "org.junit.platform:junit-platform-launcher",
+        "org.mockito:mockito-core",
+        "org.mockito:mockito-junit-jupiter",
+        "io.rest-assured:rest-assured"
+    ],
+    "groupName": "Testing Dependencies",
+    "prBodyNotes": [
+        "🧪 **Testing Dependencies - Multi-Module Check**",
+        "",
+        "### Modules sharing version variables in `libs.versions.toml`:",
+        "",
+        "**JUnit (version: `junit-jupiter = \"6.0.2\"`)**",
+        "- `org.junit.jupiter:junit-jupiter` → Test framework core",
+        "- `org.junit.platform:junit-platform-launcher` → Platform (version managed by BOM)",
+        "",
+        "**Mockito (version: `mockito = \"5.12.0\"`)**",
+        "- `org.mockito:mockito-core` → Mocking framework core  ",
+        "- `org.mockito:mockito-junit-jupiter` → JUnit 5 integration",
+        "",
+        "**REST Assured (version: `rest-assured = \"6.0.0\"`)**",
+        "- `io.rest-assured:rest-assured` → Standalone",
+        "",
+        "⚠️ **Compatibility:** JUnit 6.x requires Java 21+",
+        "🔗 [JUnit Docs](https://junit.org/junit5/docs/current/user-guide/) | [Mockito Docs](https://javadoc.io/doc/org.mockito/mockito-core/latest/)"
+    ]
     },
     {
     "description": "Group Database drivers",
@@ -73,7 +181,20 @@
         "org.postgresql",
         "com.h2database"
     ],
-    "groupName": "Database Drivers"
+    "groupName": "Database Drivers",
+    "prBodyNotes": [
+        "🗄️ **Database Dependencies in libs.versions.toml:**",
+        "",
+        "| Driver | Current Version | Used By |",
+        "|--------|----------------|---------|",
+        "| postgresql | 42.7.10 | Production runtime |",
+        "| h2 | 2.4.240 | Testing & development |",
+        "",
+        "**Related:** Testcontainers PostgreSQL module (testcontainers-postgresql) version: 1.21.4",
+        "",
+        "🔗 [PostgreSQL JDBC Changelog](https://jdbc.postgresql.org/changelogs/)",
+        "🔗 [H2 Database Changelog](http://www.h2database.com/html/changelog.html)"
+    ]
 },
 {
     "description": "Group Observability tools",
@@ -112,6 +233,7 @@
   "prConcurrentLimit": 5,
   "prCreation": "immediate",
   "rebaseWhen": "behind-base-branch",
+"prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}\n\n---\n\n### 🔍 Dependency Cross-Reference Check\n\n**Related dependencies in this project** (defined in `gradle/libs.versions.toml`):\n\n{{#if (contains packageName 'org.testcontainers')}}\n⚠️ **Testcontainers modules must have synchronized versions:**\n- `org.testcontainers:testcontainers` → Check version in libs.versions.toml\n- `org.testcontainers:junit-jupiter` → Must match core version\n- `org.testcontainers:postgresql` → Must match core version\n\n**Before merging:** Verify all Testcontainers modules exist for version {{newVersion}} at [Maven Central](https://mvnrepository.com/artifact/org.testcontainers).\n{{/if}}\n\n{{#if (contains packageName 'org.springframework')}}\n📦 **Spring Framework dependencies:**\n- Ensure Spring Boot version compatibility\n- Check `spring-dependency-management` plugin alignment\n{{/if}}\n\n{{#if (contains packageName 'org.junit')}}\n🧪 **JUnit dependencies:**\n- `junit-jupiter` → {{currentVersion}}\n- `junit-platform-launcher` → Should be compatible with Jupiter version\n{{/if}}\n\n**Action required:** Review the [dependency tree](https://mvnrepository.com/artifact/{{replace '/' ':' packageName}}/{{newVersion}}) before merging.\n\n{{{footer}}}",
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 3am on Monday"]

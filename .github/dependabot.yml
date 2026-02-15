@@ -23,11 +23,16 @@ updates:
         patterns:
           - "org.springframework.boot*"
           - "org.springframework*"
+      testcontainers:
+        patterns:
+          - "org.testcontainers*"
+        update-types:
+          - "minor"
+          - "patch"
       testing:
         patterns:
           - "org.junit*"
           - "org.mockito*"
-          - "org.testcontainers*"
           - "io.rest-assured*"
       database:
         patterns:
