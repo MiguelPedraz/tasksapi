@@ -29,11 +29,6 @@
   "packageRules": [
     {
     "description": "Ignore non-stable versions globally (all managers)",
-    "matchUpdateTypes": [
-        "major",
-        "minor",
-        "patch"
-    ],
     "allowedVersions": "!/^.*(-alpha|-beta|-rc|-snapshot|-dev|-pre|-milestone|-m\\d+).*$/i"
 },
 {
@@ -232,8 +227,7 @@
   "timezone": "Europe/Madrid",
   "prConcurrentLimit": 5,
   "prCreation": "immediate",
-  "rebaseWhen": "behind-base-branch",
-"prBodyTemplate": "{{{header}}}{{{table}}}{{{notes}}}{{{changelogs}}}\n\n---\n\n### 🔍 Dependency Cross-Reference Check\n\n**Related dependencies in this project** (defined in `gradle/libs.versions.toml`):\n\n{{#if (contains packageName 'org.testcontainers')}}\n⚠️ **Testcontainers modules must have synchronized versions:**\n- `org.testcontainers:testcontainers` → Check version in libs.versions.toml\n- `org.testcontainers:junit-jupiter` → Must match core version\n- `org.testcontainers:postgresql` → Must match core version\n\n**Before merging:** Verify all Testcontainers modules exist for version {{newVersion}} at [Maven Central](https://mvnrepository.com/artifact/org.testcontainers).\n{{/if}}\n\n{{#if (contains packageName 'org.springframework')}}\n📦 **Spring Framework dependencies:**\n- Ensure Spring Boot version compatibility\n- Check `spring-dependency-management` plugin alignment\n{{/if}}\n\n{{#if (contains packageName 'org.junit')}}\n🧪 **JUnit dependencies:**\n- `junit-jupiter` → {{currentVersion}}\n- `junit-platform-launcher` → Should be compatible with Jupiter version\n{{/if}}\n\n**Action required:** Review the [dependency tree](https://mvnrepository.com/artifact/{{replace '/' ':' packageName}}/{{newVersion}}) before merging.\n\n{{{footer}}}",
+"rebaseWhen": "behind-base-branch",
   "lockFileMaintenance": {
     "enabled": true,
     "schedule": ["before 3am on Monday"]
