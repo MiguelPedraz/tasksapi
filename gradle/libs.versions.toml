@@ -4,7 +4,7 @@
 
 [versions]
 # Spring Framework - Latest LTS
-spring-boot = "3.4.2"
+spring-boot = "4.0.2"
 spring-dependency-management = "1.1.7"
 
 # Databases - Latest Stable
@@ -12,13 +12,13 @@ postgresql = "42.7.3"
 h2 = "2.2.224"
 
 # Testing - Latest Stable
-junit-jupiter = "5.12.1"
+junit-jupiter = "6.0.2"
 mockito = "5.12.0"
-testcontainers = "1.19.8"
-rest-assured = "5.4.0"
+testcontainers = "2.0.3"
+rest-assured = "6.0.0"
 
 # Documentation - Latest Stable
-springdoc-openapi = "2.8.15"
+springdoc-openapi = "3.0.1"
 
 # Observability - Latest Stable
 micrometer = "1.13.1"
