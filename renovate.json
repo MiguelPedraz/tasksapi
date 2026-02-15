@@ -1,47 +1,82 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-"baseBranches": [
+  "baseBranchPatterns": [
     "develop"
-],
+  ],
   "ignoreDeps": [],
-  "enabledManagers": ["gradle", "gradle-wrapper"],
+  "enabledManagers": [
+    "gradle",
+    "gradle-wrapper"
+  ],
   "packageRules": [
     {
-      "matchDatasources": ["maven"],
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchDatasources": [
+        "maven"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "automerge": true,
       "automergeType": "pr",
       "automergeStrategy": "squash"
     },
     {
-      "matchDatasources": ["maven"],
-      "matchPackagePatterns": ["^org.springframework.boot"],
-      "schedule": ["before 3am on Monday"],
-      "groupName": "Spring Boot"
+      "matchDatasources": [
+        "maven"
+      ],
+      "schedule": [
+        "before 3am on Monday"
+      ],
+      "groupName": "Spring Boot",
+      "matchPackageNames": [
+        "/^org.springframework.boot/"
+      ]
     },
     {
-      "matchDatasources": ["maven"],
-      "matchPackagePatterns": ["^org.junit", "^org.mockito", "^org.testcontainers"],
-      "groupName": "Testing Dependencies"
+      "matchDatasources": [
+        "maven"
+      ],
+      "groupName": "Testing Dependencies",
+      "matchPackageNames": [
+        "/^org.junit/",
+        "/^org.mockito/",
+        "/^org.testcontainers/"
+      ]
     },
     {
-      "matchDatasources": ["maven"],
-      "matchPackagePatterns": ["^org.postgresql", "^com.h2database"],
-      "groupName": "Database Dependencies"
+      "matchDatasources": [
+        "maven"
+      ],
+      "groupName": "Database Dependencies",
+      "matchPackageNames": [
+        "/^org.postgresql/",
+        "/^com.h2database/"
+      ]
     }
   ],
-  "labels": ["dependencies", "automated"],
-  "assignees": ["@me"],
-  "schedule": ["after 10pm every weekday", "before 5am every weekday"],
+  "labels": [
+    "dependencies",
+    "automated"
+  ],
+  "assignees": [
+    "@me"
+  ],
+  "schedule": [
+    "after 10pm every weekday",
+    "before 5am every weekday"
+  ],
   "timezone": "Europe/Madrid",
   "prConcurrentLimit": 5,
   "prCreation": "immediate",
   "rebaseWhen": "behind-base-branch",
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 3am on Monday"]
+    "schedule": [
+      "before 3am on Monday"
+    ]
   }
 }
