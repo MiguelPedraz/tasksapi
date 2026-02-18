@@ -69,7 +69,7 @@
     ]
 },
 {
-    "description": "Testcontainers - Allow major updates but require manual review",
+    "description": "Testcontainers - Block major updates: 2.x restructured modules, junit-jupiter and postgresql do not publish independent 2.x artifacts",
     "matchDatasources": [
         "maven"
     ],
@@ -81,27 +81,7 @@
     "matchUpdateTypes": [
         "major"
     ],
-    "automerge": false,
-    "stabilityDays": 3,
-    "groupName": "Testcontainers Major Update",
-    "groupSlug": "testcontainers-major",
-    "prPriority": 10,
-    "prBodyNotes": [
-        "⚠️ **CRITICAL: Multi-Module Dependency Check**",
-        "",
-        "All three modules share the **same version variable** in `libs.versions.toml`. They must ALL be released before merging:",
-        "",
-        "### 🔍 Dependent Packages — Verify ALL exist in Maven Central before merging:",
-        "| Package | Change | Verify on Maven Central | Release Notes |\n|---------|--------|-------------------------|---------------|\n| `org.testcontainers:testcontainers` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:junit-jupiter` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |",
-        "",
-        "### ✅ Merge Checklist:",
-        "- [ ] All 3 modules exist with version {{{newVersion}}} in Maven Central",
-        "- [ ] Build passes in CI/CD",
-        "- [ ] No dependency resolution errors in logs",
-        "",
-        "**⚠️ If ANY module is missing, DO NOT MERGE — wait for a synchronized release.**"
-    ],
-    "prFooter": "📦 [View all Testcontainers artifacts](https://mvnrepository.com/artifact/org.testcontainers) | 🔗 [Release Notes](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}})"
+    "enabled": false
 },
 {
     "description": "Testcontainers - Auto-merge minor/patch updates",
@@ -123,10 +103,17 @@
     "prBodyNotes": [
         "📦 **Testcontainers Multi-Module Update**",
         "",
-        "All modules share the same version variable in `libs.versions.toml` and are updated together:",
-        "| Package | Change | Maven Central | Release Notes |\n|---------|--------|---------------|---------------|\n| `org.testcontainers:testcontainers` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:junit-jupiter` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |",
+        "All modules share the `testcontainers` version variable in `libs.versions.toml` and are updated together.",
         "",
-        "Auto-merge enabled — patch/minor updates are usually safe ✅"
+        "### 🔍 Verify each module exists in Maven Central before merging:",
+        "| Module | Current (`libs.versions.toml`) | Proposed | All versions (Maven Central) |\n|--------|-------------------------------|----------|------------------------------|\n| `org.testcontainers:testcontainers` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/versions) |\n| `org.testcontainers:junit-jupiter` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/versions) |\n| `org.testcontainers:postgresql` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/postgresql/versions) |",
+        "",
+        "### ✅ Merge Checklist:",
+        "- [ ] Version **{{{newVersion}}}** exists for ALL 3 modules in Maven Central (check links above)",
+        "- [ ] Build passes in CI/CD",
+        "- [ ] No dependency resolution errors in logs",
+        "",
+        "**⚠️ If ANY module is missing version {{{newVersion}}}, DO NOT MERGE — wait for a synchronized release.**"
     ]
 },
 {
