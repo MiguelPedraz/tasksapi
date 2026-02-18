@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "config:recommended",
+    "mergeConfidence:all-badges"
 ],
 "prBodyColumns": [
     "Package",
@@ -91,14 +92,7 @@
         "All three modules share the **same version variable** in `libs.versions.toml`. They must ALL be released before merging:",
         "",
         "### 🔍 Dependent Packages — Verify ALL exist in Maven Central before merging:",
-        "",
-        "| Package | Change | Verify on Maven Central |",
-        "|---------|--------|-------------------------|",
-        "| `org.testcontainers:testcontainers` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) |",
-        "| `org.testcontainers:junit-jupiter` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) |",
-        "| `org.testcontainers:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) |",
-        "",
-        "🔗 [Release Notes v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}})",
+        "| Package | Change | Verify on Maven Central | Release Notes |\n|---------|--------|-------------------------|---------------|\n| `org.testcontainers:testcontainers` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:junit-jupiter` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [Check v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |",
         "",
         "### ✅ Merge Checklist:",
         "- [ ] All 3 modules exist with version {{{newVersion}}} in Maven Central",
@@ -130,14 +124,7 @@
         "📦 **Testcontainers Multi-Module Update**",
         "",
         "All modules share the same version variable in `libs.versions.toml` and are updated together:",
-        "",
-        "| Package | Change | Maven Central |",
-        "|---------|--------|---------------|",
-        "| `org.testcontainers:testcontainers` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) |",
-        "| `org.testcontainers:junit-jupiter` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) |",
-        "| `org.testcontainers:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) |",
-        "",
-        "🔗 [Release Notes v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}})",
+        "| Package | Change | Maven Central | Release Notes |\n|---------|--------|---------------|---------------|\n| `org.testcontainers:testcontainers` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:junit-jupiter` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |\n| `org.testcontainers:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [v{{{newVersion}}}](https://mvnrepository.com/artifact/org.testcontainers/postgresql/{{{newVersion}}}) | [v{{{newVersion}}}](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}}) |",
         "",
         "Auto-merge enabled — patch/minor updates are usually safe ✅"
     ]
