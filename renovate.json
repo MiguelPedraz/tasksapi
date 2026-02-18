@@ -36,6 +36,9 @@
   "packageRules": [
     {
     "description": "Ignore non-stable versions globally (all managers)",
+    "matchPackagePatterns": [
+        ".*"
+    ],
     "allowedVersions": "!/^.*(-alpha|-beta|-rc|-snapshot|-dev|-pre|-milestone|-m\\d+).*$/i"
 },
 {
