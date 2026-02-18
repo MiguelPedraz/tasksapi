@@ -1,7 +1,14 @@
-name: Run Renovate (manual)
+name: Run Renovate
 
 on:
   workflow_dispatch:
+  schedule:
+    # Run after 10pm every weekday (22:00 UTC+1 = 21:00 UTC in winter, 20:00 UTC in summer)
+    # Using 21:00 UTC to cover most of the year
+    - cron: '0 21 * * 1-5'
+    # Run before 5am every weekday (5:00 UTC+1 = 4:00 UTC in winter, 3:00 UTC in summer)
+    # Using 4:00 UTC to cover most of the year
+    - cron: '0 4 * * 1-5'
 
 jobs:
   renovate:
