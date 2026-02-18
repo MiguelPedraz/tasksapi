@@ -20,6 +20,8 @@ jobs:
         env:
           # Override schedule so manual runs always execute regardless of configured schedule
           RENOVATE_FORCE: '{"schedule":[]}'
+          # Enable debug logging to see exactly what versions Renovate evaluated per package
+          LOG_LEVEL: debug
         with:
           # Crear un Personal Access Token con scope 'repo' en GitHub Settings → Developer settings → Personal access tokens
           # Añadir en Settings → Secrets and variables → Actions → New repository secret: RENOVATE_TOKEN
