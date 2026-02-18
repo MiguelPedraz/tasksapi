@@ -72,7 +72,7 @@
     ]
 },
 {
-    "description": "Testcontainers - Block major updates: 2.x restructured modules, junit-jupiter and postgresql do not publish independent 2.x artifacts",
+    "description": "Testcontainers - Major updates: require manual verification that all 3 modules published the new version",
     "matchDatasources": [
         "maven"
     ],
@@ -84,7 +84,26 @@
     "matchUpdateTypes": [
         "major"
     ],
-    "enabled": false
+    "automerge": false,
+    "stabilityDays": 3,
+    "groupName": "Testcontainers Major Update",
+    "groupSlug": "testcontainers-major",
+    "prPriority": 10,
+    "prBodyNotes": [
+        "⚠️ **CRITICAL: Multi-Module Dependency Check**",
+        "",
+        "All three modules share the same `testcontainers` version variable in `libs.versions.toml`. In major releases some modules may NOT publish the new version independently — verify ALL before merging.",
+        "",
+        "### 🔍 Verify each module exists in Maven Central before merging:",
+        "| Module | Current (`libs.versions.toml`) | Proposed | All versions (Maven Central) |\n|--------|-------------------------------|----------|------------------------------|\n| `org.testcontainers:testcontainers` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/versions) |\n| `org.testcontainers:junit-jupiter` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/versions) |\n| `org.testcontainers:postgresql` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/postgresql/versions) |",
+        "",
+        "### ✅ Merge Checklist:",
+        "- [ ] Version **{{{newVersion}}}** exists for ALL 3 modules in Maven Central (check links above)",
+        "- [ ] Build passes in CI/CD",
+        "- [ ] No dependency resolution errors in logs",
+        "",
+        "**⚠️ If ANY module is missing version {{{newVersion}}}, DO NOT MERGE — wait for a synchronized release.**"
+    ]
 },
 {
     "description": "Testcontainers - Auto-merge minor/patch updates",
