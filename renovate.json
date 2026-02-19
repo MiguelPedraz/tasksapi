@@ -1,241 +1,256 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-    "mergeConfidence:all-badges"
-],
-"prBodyColumns": [
-    "Package",
-    "Change",
-    "Age",
-    "Confidence"
-],
-"platform": "github",
-"autodiscover": true,
-"autodiscoverFilter": [
-    "MiguelPedraz/tasksapi"
-  ],
-"baseBranches": [
-    "develop"
-],
-"gitAuthor": "Renovate Bot <bot@renovateapp.com>",
-  "ignoreDeps": [],
-"ignoreUnstable": true,
-"respectLatest": true,
-"enabledManagers": [
-    "gradle",
-    "gradle-wrapper",
-    "github-actions"
-],
-"hostRules": [
-    {
-        "matchHost": "https://repo1.maven.org",
-        "description": "Maven Central (Sonatype CDN) - Primary source for Maven dependencies"
-    }
-],
-  "packageRules": [
-    {
-    "description": "Ignore non-stable versions globally (all managers)",
-    "matchPackagePatterns": [
-        ".*"
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [
+        "config:recommended",
+        "mergeConfidence:all-badges"
     ],
-    "allowedVersions": "!/^.*(-alpha|-beta|-rc|-snapshot|-dev|-pre|-milestone|-m\\d+).*$/i"
-},
-{
-    "description": "Auto-merge minor/patch updates for all Maven dependencies",
-      "matchDatasources": ["maven"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "automerge": true,
-      "automergeType": "pr",
-      "automergeStrategy": "squash"
-    },
-    {
-    "description": "Group Spring Framework updates",
-      "matchDatasources": ["maven"],
-    "matchPackagePrefixes": [
-        "org.springframework"
+    "prBodyColumns": [
+        "Package",
+        "Change",
+        "Age",
+        "Confidence"
     ],
-      "schedule": ["before 3am on Monday"],
-    "groupName": "Spring Framework",
-    "prBodyNotes": [
-        "📦 **Spring Framework Dependencies Cross-Check:**",
-        "",
-        "### 🔗 Related Packages in `libs.versions.toml`:",
-        "",
-        "| Package | Role | Release Notes |",
-        "|---------|------|---------------|",
-        "| `org.springframework.boot:spring-boot-starter-parent` | BOM / Parent POM | [Releases](https://github.com/spring-projects/spring-boot/releases) |",
-        "| `io.spring.dependency-management` | Gradle plugin (version pinned separately) | [Releases](https://github.com/spring-gradle-plugins/dependency-management-plugin/releases) |",
-        "",
-        "⚠️ **Compatibility:** Verify Spring Boot BOM aligns with the new Spring Framework version.",
-        "🔗 [Compatibility Matrix](https://spring.io/projects/spring-boot#support)"
-    ]
-},
-{
-    "description": "Testcontainers core - major updates require manual review (modules are versioned separately)",
-    "matchDatasources": [
-        "maven"
+    "platform": "github",
+    "autodiscover": true,
+    "autodiscoverFilter": [
+        "MiguelPedraz/tasksapi"
     ],
-    "matchPackageNames": [
-        "org.testcontainers:testcontainers"
+    "baseBranches": [
+        "develop"
     ],
-    "matchUpdateTypes": [
-        "major"
-    ],
-    "automerge": false,
-    "stabilityDays": 3,
-    "prPriority": 10,
-    "prBodyNotes": [
-        "⚠️ **Testcontainers Core — Major Update**",
-        "",
-        "This updates only `org.testcontainers:testcontainers` (version var `testcontainers` in `libs.versions.toml`).",
-        "The dependent modules use a **separate** version variable `testcontainers-modules` and are NOT affected by this PR.",
-        "",
-        "### ✅ Merge Checklist:",
-        "- [ ] Build passes in CI/CD",
-        "- [ ] No dependency resolution errors in logs",
-        "- [ ] [Release Notes](https://github.com/testcontainers/testcontainers-java/releases/tag/v{{{newVersion}}})"
-    ]
-},
-{
-    "description": "Testcontainers modules (junit-jupiter, postgresql) — block major: 2.x artifacts do not exist independently",
-    "matchDatasources": [
-        "maven"
-    ],
-    "matchPackageNames": [
-        "org.testcontainers:junit-jupiter",
-        "org.testcontainers:postgresql"
-    ],
-    "matchUpdateTypes": [
-        "major"
-    ],
-    "enabled": false
-},
-{
-    "description": "Testcontainers - Auto-merge minor/patch updates",
-    "matchDatasources": [
-        "maven"
-    ],
-    "matchPackageNames": [
-        "org.testcontainers:testcontainers",
-        "org.testcontainers:junit-jupiter",
-        "org.testcontainers:postgresql"
-    ],
-    "matchUpdateTypes": [
-        "minor",
-        "patch"
-    ],
-    "automerge": true,
-    "groupName": "Testcontainers",
-    "groupSlug": "testcontainers",
-    "prBodyNotes": [
-        "📦 **Testcontainers Multi-Module Update**",
-        "",
-        "All three modules always release together on 1.x. They use two version variables in `libs.versions.toml`: `testcontainers` (core) and `testcontainers-modules` (junit-jupiter, postgresql).",
-        "",
-        "### 🔍 Verify all modules exist in Maven Central before merging:",
-        "| Module | Current | Proposed | All versions (Maven Central) |\n|--------|---------|----------|------------------------------|\n| `org.testcontainers:testcontainers` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/versions) |\n| `org.testcontainers:junit-jupiter` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/versions) |\n| `org.testcontainers:postgresql` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/postgresql/versions) |",
-        "",
-        "### ✅ Merge Checklist:",
-        "- [ ] Version **{{{newVersion}}}** exists for ALL 3 modules in Maven Central (check links above)",
-        "- [ ] Build passes in CI/CD",
-        "- [ ] No dependency resolution errors in logs",
-        "",
-        "**⚠️ If ANY module is missing version {{{newVersion}}}, DO NOT MERGE — wait for a synchronized release.**"
-    ]
-},
-{
-    "description": "Group Testing frameworks with module dependency info",
-      "matchDatasources": ["maven"],
-    "matchPackageNames": [
-        "org.junit.jupiter:junit-jupiter",
-        "org.junit.platform:junit-platform-launcher",
-        "org.mockito:mockito-core",
-        "org.mockito:mockito-junit-jupiter",
-        "io.rest-assured:rest-assured"
-    ],
-    "groupName": "Testing Dependencies",
-    "prBodyNotes": [
-        "🧪 **Testing Dependencies — Multi-Module Check**",
-        "",
-        "### 📦 Packages grouped by shared version variable in `libs.versions.toml`:",
-        "",
-        "| Package | Role | Version Variable | Release Notes |",
-        "|---------|------|------------------|---------------|",
-        "| `org.junit.jupiter:junit-jupiter` | JUnit 5 test framework | `junit-jupiter` | [Releases](https://github.com/junit-team/junit5/releases) |",
-        "| `org.junit.platform:junit-platform-launcher` | JUnit Platform (BOM-managed) | `junit-jupiter` | [Releases](https://github.com/junit-team/junit5/releases) |",
-        "| `org.mockito:mockito-core` | Mocking framework core | `mockito` | [Releases](https://github.com/mockito/mockito/releases) |",
-        "| `org.mockito:mockito-junit-jupiter` | Mockito JUnit 5 integration | `mockito` | [Releases](https://github.com/mockito/mockito/releases) |",
-        "| `io.rest-assured:rest-assured` | HTTP testing library | `rest-assured` | [Releases](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes) |",
-        "",
-        "⚠️ **Compatibility:** JUnit 6.x requires Java 21+",
-        "🔗 [JUnit Docs](https://junit.org/junit5/docs/current/user-guide/) | [Mockito Docs](https://javadoc.io/doc/org.mockito/mockito-core/latest/)"
-    ]
-    },
-    {
-    "description": "Group Database drivers",
-    "matchDatasources": [
-        "maven"
-    ],
-    "matchPackagePrefixes": [
-        "org.postgresql",
-        "com.h2database"
-    ],
-    "groupName": "Database Drivers",
-    "prBodyNotes": [
-        "🗄️ **Database Dependencies — Multi-Driver Update**",
-        "",
-        "| Package | Change | Release Notes |",
-        "|---------|--------|---------------|",
-        "| `org.postgresql:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [Changelog](https://jdbc.postgresql.org/changelogs/) |",
-        "| `com.h2database:h2` | {{{currentVersion}}} → **{{{newVersion}}}** | [Changelog](http://www.h2database.com/html/changelog.html) |",
-        "",
-        "### 🔗 Related Dependency (not updated here):",
-        "",
-        "| Package | Role | Verify |",
-        "|---------|------|--------|",
-        "| `org.testcontainers:postgresql` | Testcontainers PostgreSQL module | [Maven Central](https://mvnrepository.com/artifact/org.testcontainers/postgresql) |"
-    ]
-},
-{
-    "description": "Group Observability tools",
-      "matchDatasources": ["maven"],
-    "matchPackagePrefixes": [
-        "io.micrometer",
-        "org.springdoc"
-    ],
-    "groupName": "Observability & Documentation"
-},
-{
-    "description": "Group Build tools and Gradle plugins",
-    "matchManagers": [
-        "gradle"
-    ],
-    "matchDepTypes": [
-        "plugin"
-    ],
-    "groupName": "Build Tools & Plugins"
-},
-{
-    "description": "Stable releases for GitHub Actions",
-    "matchManagers": [
+    "gitAuthor": "Renovate Bot <bot@renovateapp.com>",
+    "ignoreDeps": [],
+    "ignoreUnstable": true,
+    "respectLatest": true,
+    "enabledManagers": [
+        "gradle",
+        "gradle-wrapper",
         "github-actions"
     ],
-    "pinDigests": false,
-    "semanticCommits": "enabled"
+    "hostRules": [
+        {
+            "matchHost": "https://repo1.maven.org",
+            "description": "Maven Central (Sonatype CDN) - Primary source for Maven dependencies"
+        }
+    ],
+    "packageRules": [
+        {
+            "description": "Ignore non-stable versions globally (all managers)",
+            "matchPackagePatterns": [
+                ".*"
+            ],
+            "allowedVersions": "!/^.*(-alpha|-beta|-rc|-snapshot|-dev|-pre|-milestone|-m\\d+).*$/i"
+        },
+        {
+            "description": "Auto-merge minor/patch updates for all Maven dependencies",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "automerge": true,
+            "automergeType": "pr",
+            "automergeStrategy": "squash"
+        },
+        {
+            "description": "Group Spring Framework updates",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchPackagePrefixes": [
+                "org.springframework"
+            ],
+            "schedule": [
+                "before 3am on Monday"
+            ],
+            "groupName": "Spring Framework",
+            "prBodyNotes": [
+                "📦 **Spring Framework Dependencies Cross-Check:**",
+                "",
+                "### 🔗 Related Packages in `libs.versions.toml`:",
+                "",
+                "| Package | Role | Release Notes |",
+                "|---------|------|---------------|",
+                "| `org.springframework.boot:spring-boot-starter-parent` | BOM / Parent POM | [Releases](https://github.com/spring-projects/spring-boot/releases) |",
+                "| `io.spring.dependency-management` | Gradle plugin (version pinned separately) | [Releases](https://github.com/spring-gradle-plugins/dependency-management-plugin/releases) |",
+                "",
+                "⚠️ **Compatibility:** Verify Spring Boot BOM aligns with the new Spring Framework version.",
+                "🔗 [Compatibility Matrix](https://spring.io/projects/spring-boot#support)"
+            ]
+        },
+        {
+            "description": "Testcontainers - Major updates: require manual verification that all 3 modules published the new version",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchPackageNames": [
+                "org.testcontainers:testcontainers",
+                "org.testcontainers:junit-jupiter",
+                "org.testcontainers:postgresql"
+            ],
+            "matchUpdateTypes": [
+                "major"
+            ],
+            "automerge": false,
+            "stabilityDays": 3,
+            "groupName": "Testcontainers Major Update",
+            "groupSlug": "testcontainers-major",
+            "prPriority": 10,
+            "prBodyNotes": [
+                "⚠️ **CRITICAL: Multi-Module Dependency Check**",
+                "",
+                "All three modules share the same `testcontainers` version variable in `libs.versions.toml`. In major releases some modules may NOT publish the new version independently — verify ALL before merging.",
+                "",
+                "### 🔍 Verify each module exists in Maven Central before merging:",
+                "| Module | Current (`libs.versions.toml`) | Proposed | All versions (Maven Central) |\n|--------|-------------------------------|----------|------------------------------|\n| `org.testcontainers:testcontainers` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/versions) |\n| `org.testcontainers:junit-jupiter` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/versions) |\n| `org.testcontainers:postgresql` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/postgresql/versions) |",
+                "",
+                "### ✅ Merge Checklist:",
+                "- [ ] Version **{{{newVersion}}}** exists for ALL 3 modules in Maven Central (check links above)",
+                "- [ ] Build passes in CI/CD",
+                "- [ ] No dependency resolution errors in logs",
+                "",
+                "**⚠️ If ANY module is missing version {{{newVersion}}}, DO NOT MERGE — wait for a synchronized release.**"
+            ]
+        },
+        {
+            "description": "Testcontainers - Auto-merge minor/patch updates",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchPackageNames": [
+                "org.testcontainers:testcontainers",
+                "org.testcontainers:junit-jupiter",
+                "org.testcontainers:postgresql"
+            ],
+            "matchUpdateTypes": [
+                "minor",
+                "patch"
+            ],
+            "automerge": true,
+            "groupName": "Testcontainers",
+            "groupSlug": "testcontainers",
+            "prBodyNotes": [
+                "📦 **Testcontainers Multi-Module Update**",
+                "",
+                "All modules share the `testcontainers` version variable in `libs.versions.toml` and are updated together.",
+                "",
+                "### 🔍 Verify each module exists in Maven Central before merging:",
+                "| Module | Current (`libs.versions.toml`) | Proposed | All versions (Maven Central) |\n|--------|-------------------------------|----------|------------------------------|\n| `org.testcontainers:testcontainers` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/testcontainers/versions) |\n| `org.testcontainers:junit-jupiter` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter/versions) |\n| `org.testcontainers:postgresql` | `{{{currentVersion}}}` | **{{{newVersion}}}** | [📦 All versions](https://mvnrepository.com/artifact/org.testcontainers/postgresql/versions) |",
+                "",
+                "### ✅ Merge Checklist:",
+                "- [ ] Version **{{{newVersion}}}** exists for ALL 3 modules in Maven Central (check links above)",
+                "- [ ] Build passes in CI/CD",
+                "- [ ] No dependency resolution errors in logs",
+                "",
+                "**⚠️ If ANY module is missing version {{{newVersion}}}, DO NOT MERGE — wait for a synchronized release.**"
+            ]
+        },
+        {
+            "description": "Group Testing frameworks with module dependency info",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchPackageNames": [
+                "org.junit.jupiter:junit-jupiter",
+                "org.junit.platform:junit-platform-launcher",
+                "org.mockito:mockito-core",
+                "org.mockito:mockito-junit-jupiter",
+                "io.rest-assured:rest-assured"
+            ],
+            "groupName": "Testing Dependencies",
+            "prBodyNotes": [
+                "🧪 **Testing Dependencies — Multi-Module Check**",
+                "",
+                "### 📦 Packages grouped by shared version variable in `libs.versions.toml`:",
+                "",
+                "| Package | Role | Version Variable | Release Notes |",
+                "|---------|------|------------------|---------------|",
+                "| `org.junit.jupiter:junit-jupiter` | JUnit 5 test framework | `junit-jupiter` | [Releases](https://github.com/junit-team/junit5/releases) |",
+                "| `org.junit.platform:junit-platform-launcher` | JUnit Platform (BOM-managed) | `junit-jupiter` | [Releases](https://github.com/junit-team/junit5/releases) |",
+                "| `org.mockito:mockito-core` | Mocking framework core | `mockito` | [Releases](https://github.com/mockito/mockito/releases) |",
+                "| `org.mockito:mockito-junit-jupiter` | Mockito JUnit 5 integration | `mockito` | [Releases](https://github.com/mockito/mockito/releases) |",
+                "| `io.rest-assured:rest-assured` | HTTP testing library | `rest-assured` | [Releases](https://github.com/rest-assured/rest-assured/wiki/ReleaseNotes) |",
+                "",
+                "⚠️ **Compatibility:** JUnit 6.x requires Java 21+",
+                "🔗 [JUnit Docs](https://junit.org/junit5/docs/current/user-guide/) | [Mockito Docs](https://javadoc.io/doc/org.mockito/mockito-core/latest/)"
+            ]
+        },
+        {
+            "description": "Group Database drivers",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchPackagePrefixes": [
+                "org.postgresql",
+                "com.h2database"
+            ],
+            "groupName": "Database Drivers",
+            "prBodyNotes": [
+                "🗄️ **Database Dependencies — Multi-Driver Update**",
+                "",
+                "| Package | Change | Release Notes |",
+                "|---------|--------|---------------|",
+                "| `org.postgresql:postgresql` | {{{currentVersion}}} → **{{{newVersion}}}** | [Changelog](https://jdbc.postgresql.org/changelogs/) |",
+                "| `com.h2database:h2` | {{{currentVersion}}} → **{{{newVersion}}}** | [Changelog](http://www.h2database.com/html/changelog.html) |",
+                "",
+                "### 🔗 Related Dependency (not updated here):",
+                "",
+                "| Package | Role | Verify |",
+                "|---------|------|--------|",
+                "| `org.testcontainers:postgresql` | Testcontainers PostgreSQL module | [Maven Central](https://mvnrepository.com/artifact/org.testcontainers/postgresql) |"
+            ]
+        },
+        {
+            "description": "Group Observability tools",
+            "matchDatasources": [
+                "maven"
+            ],
+            "matchPackagePrefixes": [
+                "io.micrometer",
+                "org.springdoc"
+            ],
+            "groupName": "Observability & Documentation"
+        },
+        {
+            "description": "Group Build tools and Gradle plugins",
+            "matchManagers": [
+                "gradle"
+            ],
+            "matchDepTypes": [
+                "plugin"
+            ],
+            "groupName": "Build Tools & Plugins"
+        },
+        {
+            "description": "Stable releases for GitHub Actions",
+            "matchManagers": [
+                "github-actions"
+            ],
+            "pinDigests": false,
+            "semanticCommits": "enabled"
+        }
+    ],
+    "labels": [
+        "dependencies",
+        "automated"
+    ],
+    "assignees": [
+        "@MiguelPedraz"
+    ],
+    "schedule": [
+        "after 10pm every weekday",
+        "before 5am every weekday"
+    ],
+    "timezone": "Europe/Madrid",
+    "prConcurrentLimit": 5,
+    "prCreation": "immediate",
+    "rebaseWhen": "behind-base-branch",
+    "lockFileMaintenance": {
+        "enabled": true,
+        "schedule": [
+            "before 3am on Monday"
+        ]
     }
-  ],
-  "labels": ["dependencies", "automated"],
-"assignees": [
-    "@MiguelPedraz"
-],
-  "schedule": ["after 10pm every weekday", "before 5am every weekday"],
-  "timezone": "Europe/Madrid",
-  "prConcurrentLimit": 5,
-  "prCreation": "immediate",
-"rebaseWhen": "behind-base-branch",
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": ["before 3am on Monday"]
-  }
 }
