@@ -4,14 +4,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.company.tasksapi.domain.event.TaskAssignedEvent;
-import com.company.tasksapi.domain.event.TaskCreatedEvent;
-import com.company.tasksapi.domain.event.TaskStatusChangedEvent;
 import com.company.tasksapi.domain.exception.TaskNotFoundException;
 import com.company.tasksapi.domain.model.Priority;
 import com.company.tasksapi.domain.model.Task;
@@ -29,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TaskService implements TaskUseCase {
     
     private final TaskRepositoryPort taskRepository;
-    private final ApplicationEventPublisher eventPublisher;
+    private final AsyncEventPublisher asyncEventPublisher;
     
     @Override
     public Task createTask(Task task) {
@@ -38,7 +33,7 @@ public class TaskService implements TaskUseCase {
         Task savedTask = taskRepository.save(task);
         
         // Publish domain event asynchronously
-        publishTaskCreatedEvent(savedTask);
+        asyncEventPublisher.publishTaskCreated(savedTask);
         
         log.info("Task created successfully with id: {}", savedTask.getId());
         return savedTask;
@@ -136,7 +131,7 @@ public class TaskService implements TaskUseCase {
         Task updatedTask = taskRepository.save(task);
         
         // Publish status change event
-        publishStatusChangedEvent(id, oldStatus, newStatus, changedBy);
+        asyncEventPublisher.publishStatusChanged(id, oldStatus, newStatus, changedBy);
         
         log.info("Task status changed successfully: {} -> {}", oldStatus, newStatus);
         return updatedTask;
@@ -153,7 +148,7 @@ public class TaskService implements TaskUseCase {
         Task updatedTask = taskRepository.save(task);
         
         // Publish assignment event
-        publishTaskAssignedEvent(id, assignee, assignedBy);
+        asyncEventPublisher.publishTaskAssigned(id, assignee, assignedBy);
         
         log.info("Task assigned successfully to: {}", assignee);
         return updatedTask;
@@ -179,25 +174,5 @@ public class TaskService implements TaskUseCase {
         log.debug("Fetching overdue tasks");
         return taskRepository.findByDueDateBefore(LocalDateTime.now());
     }
-    
-    @Async
-    protected void publishTaskCreatedEvent(Task task) {
-        TaskCreatedEvent event = new TaskCreatedEvent(task);
-        eventPublisher.publishEvent(event);
-        log.debug("Published TaskCreatedEvent for task: {}", task.getId());
-    }
-    
-    @Async
-    protected void publishStatusChangedEvent(UUID taskId, TaskStatus oldStatus, TaskStatus newStatus, String changedBy) {
-        TaskStatusChangedEvent event = new TaskStatusChangedEvent(taskId, oldStatus, newStatus, changedBy);
-        eventPublisher.publishEvent(event);
-        log.debug("Published TaskStatusChangedEvent for task: {}", taskId);
-    }
-    
-    @Async
-    protected void publishTaskAssignedEvent(UUID taskId, String assignee, String assignedBy) {
-        TaskAssignedEvent event = new TaskAssignedEvent(taskId, assignee, assignedBy);
-        eventPublisher.publishEvent(event);
-        log.debug("Published TaskAssignedEvent for task: {}", taskId);
-    }
+
 }
