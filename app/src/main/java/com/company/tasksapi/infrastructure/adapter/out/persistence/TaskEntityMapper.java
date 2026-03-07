@@ -1,7 +1,5 @@
 package com.company.tasksapi.infrastructure.adapter.out.persistence;
 
-import java.util.stream.Collectors;
-
 import com.company.tasksapi.domain.model.Attachment;
 import com.company.tasksapi.domain.model.Comment;
 import com.company.tasksapi.domain.model.Task;
@@ -10,7 +8,10 @@ import com.company.tasksapi.infrastructure.adapter.out.persistence.entity.Commen
 import com.company.tasksapi.infrastructure.adapter.out.persistence.entity.TaskJpaEntity;
 
 public class TaskEntityMapper {
-    
+
+    private TaskEntityMapper() {
+    }
+
     public static Task toDomain(TaskJpaEntity entity) {
         if (entity == null) {
             return null;
@@ -27,13 +28,13 @@ public class TaskEntityMapper {
                 .reporter(entity.getReporter())
                 .subtasks(entity.getSubtasks().stream()
                         .map(TaskJpaEntity::getId)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .comments(entity.getComments().stream()
                         .map(TaskEntityMapper::commentToDomain)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .attachments(entity.getAttachments().stream()
                         .map(TaskEntityMapper::attachmentToDomain)
-                        .collect(Collectors.toList()))
+                        .toList())
                 .createdAt(entity.getCreatedAt())
                 .updatedAt(entity.getUpdatedAt())
                 .createdBy(entity.getCreatedBy())
@@ -77,44 +78,32 @@ public class TaskEntityMapper {
     }
     
     private static Comment commentToDomain(CommentJpaEntity entity) {
-        return Comment.builder()
-                .id(entity.getId())
-                .content(entity.getContent())
-                .author(entity.getAuthor())
-                .createdAt(entity.getCreatedAt())
-                .build();
+        return new Comment(entity.getId(), entity.getContent(), entity.getAuthor(), entity.getCreatedAt());
     }
     
     private static CommentJpaEntity commentToEntity(Comment domain) {
         return CommentJpaEntity.builder()
-                .id(domain.getId())
-                .content(domain.getContent())
-                .author(domain.getAuthor())
-                .createdAt(domain.getCreatedAt())
+                .id(domain.id())
+                .content(domain.content())
+                .author(domain.author())
+                .createdAt(domain.createdAt())
                 .build();
     }
     
     private static Attachment attachmentToDomain(AttachmentJpaEntity entity) {
-        return Attachment.builder()
-                .id(entity.getId())
-                .filename(entity.getFilename())
-                .fileUrl(entity.getFileUrl())
-                .contentType(entity.getContentType())
-                .fileSize(entity.getFileSize())
-                .uploadedBy(entity.getUploadedBy())
-                .uploadedAt(entity.getUploadedAt())
-                .build();
+        return new Attachment(entity.getId(), entity.getFilename(), entity.getFileUrl(),
+                entity.getContentType(), entity.getFileSize(), entity.getUploadedBy(), entity.getUploadedAt());
     }
     
     private static AttachmentJpaEntity attachmentToEntity(Attachment domain) {
         return AttachmentJpaEntity.builder()
-                .id(domain.getId())
-                .filename(domain.getFilename())
-                .fileUrl(domain.getFileUrl())
-                .contentType(domain.getContentType())
-                .fileSize(domain.getFileSize())
-                .uploadedBy(domain.getUploadedBy())
-                .uploadedAt(domain.getUploadedAt())
+                .id(domain.id())
+                .filename(domain.filename())
+                .fileUrl(domain.fileUrl())
+                .contentType(domain.contentType())
+                .fileSize(domain.fileSize())
+                .uploadedBy(domain.uploadedBy())
+                .uploadedAt(domain.uploadedAt())
                 .build();
     }
 }

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
@@ -39,35 +38,35 @@ public class TaskRepositoryAdapter implements TaskRepositoryPort {
     public List<Task> findAll() {
         return taskJpaRepository.findAll().stream()
                 .map(TaskEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
     
     @Override
     public List<Task> findByStatus(TaskStatus status) {
         return taskJpaRepository.findByStatus(status).stream()
                 .map(TaskEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
     
     @Override
     public List<Task> findByAssignedTo(String assignee) {
         return taskJpaRepository.findByAssignedTo(assignee).stream()
                 .map(TaskEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
     
     @Override
     public List<Task> findByReporter(String reporter) {
         return taskJpaRepository.findByReporter(reporter).stream()
                 .map(TaskEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
     
     @Override
     public List<Task> findByDueDateBefore(LocalDateTime dateTime) {
         return taskJpaRepository.findOverdueTasks(dateTime).stream()
                 .map(TaskEntityMapper::toDomain)
-                .collect(Collectors.toList());
+                .toList();
     }
     
     @Override

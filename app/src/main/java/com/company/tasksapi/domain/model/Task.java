@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+
+@Getter
 public class Task {
     private UUID id;
     private String title;
@@ -15,8 +19,11 @@ public class Task {
     private LocalDateTime dueDate;
     private String assignedTo;
     private String reporter;
+    @Getter(AccessLevel.NONE)
     private List<UUID> subtasks;
+    @Getter(AccessLevel.NONE)
     private List<Comment> comments;
+    @Getter(AccessLevel.NONE)
     private List<Attachment> attachments;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
@@ -41,39 +48,7 @@ public class Task {
         this.updatedBy = builder.updatedBy;
     }
     
-    // Getters
-    public UUID getId() {
-        return id;
-    }
-    
-    public String getTitle() {
-        return title;
-    }
-    
-    public String getDescription() {
-        return description;
-    }
-    
-    public TaskStatus getStatus() {
-        return status;
-    }
-    
-    public Priority getPriority() {
-        return priority;
-    }
-    
-    public LocalDateTime getDueDate() {
-        return dueDate;
-    }
-    
-    public String getAssignedTo() {
-        return assignedTo;
-    }
-    
-    public String getReporter() {
-        return reporter;
-    }
-    
+    // Collection getters returning defensive copies
     public List<UUID> getSubtasks() {
         return Collections.unmodifiableList(subtasks);
     }
@@ -84,22 +59,6 @@ public class Task {
     
     public List<Attachment> getAttachments() {
         return Collections.unmodifiableList(attachments);
-    }
-    
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-    
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-    
-    public String getCreatedBy() {
-        return createdBy;
-    }
-    
-    public String getUpdatedBy() {
-        return updatedBy;
     }
     
     // Business methods

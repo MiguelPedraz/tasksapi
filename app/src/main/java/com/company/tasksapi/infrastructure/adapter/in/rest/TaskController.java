@@ -2,11 +2,19 @@ package com.company.tasksapi.infrastructure.adapter.in.rest;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.company.tasksapi.application.dto.AssignRequest;
 import com.company.tasksapi.application.dto.StatusChangeRequest;
@@ -99,7 +107,7 @@ public class TaskController {
         List<Task> tasks = taskUseCase.getAllTasks();
         List<TaskResponse> response = tasks.stream()
                 .map(taskMapper::domainToResponse)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(response);
     }
     
@@ -111,7 +119,7 @@ public class TaskController {
         List<Task> tasks = taskUseCase.getTasksByStatus(status);
         List<TaskResponse> response = tasks.stream()
                 .map(taskMapper::domainToResponse)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(response);
     }
     
@@ -123,7 +131,7 @@ public class TaskController {
         List<Task> tasks = taskUseCase.getTasksByAssignee(assignee);
         List<TaskResponse> response = tasks.stream()
                 .map(taskMapper::domainToResponse)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(response);
     }
     
@@ -135,7 +143,7 @@ public class TaskController {
         List<Task> tasks = taskUseCase.getTasksByReporter(reporter);
         List<TaskResponse> response = tasks.stream()
                 .map(taskMapper::domainToResponse)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(response);
     }
     
@@ -146,7 +154,7 @@ public class TaskController {
         List<Task> tasks = taskUseCase.getOverdueTasks();
         List<TaskResponse> response = tasks.stream()
                 .map(taskMapper::domainToResponse)
-                .collect(Collectors.toList());
+                .toList();
         return ResponseEntity.ok(response);
     }
     
@@ -161,7 +169,7 @@ public class TaskController {
     public ResponseEntity<TaskResponse> changeTaskStatus(
             @Parameter(description = "Task ID") @PathVariable UUID id,
             @Valid @RequestBody StatusChangeRequest request) {
-        Task updatedTask = taskUseCase.changeTaskStatus(id, request.getNewStatus(), request.getChangedBy());
+        Task updatedTask = taskUseCase.changeTaskStatus(id, request.newStatus(), request.changedBy());
         TaskResponse response = taskMapper.domainToResponse(updatedTask);
         return ResponseEntity.ok(response);
     }
@@ -176,7 +184,7 @@ public class TaskController {
     public ResponseEntity<TaskResponse> assignTask(
             @Parameter(description = "Task ID") @PathVariable UUID id,
             @Valid @RequestBody AssignRequest request) {
-        Task updatedTask = taskUseCase.assignTask(id, request.getAssignee(), request.getAssignedBy());
+        Task updatedTask = taskUseCase.assignTask(id, request.assignee(), request.assignedBy());
         TaskResponse response = taskMapper.domainToResponse(updatedTask);
         return ResponseEntity.ok(response);
     }
