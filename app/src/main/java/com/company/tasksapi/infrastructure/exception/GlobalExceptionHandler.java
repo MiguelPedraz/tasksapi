@@ -22,12 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String TIMESTAMP = "timestamp";
+
     @ExceptionHandler(TaskNotFoundException.class)
     public ProblemDetail handleTaskNotFoundException(TaskNotFoundException ex) {
         log.error("Task not found: {}", ex.getMessage());
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problem.setTitle("Task Not Found");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         problem.setProperty("taskId", ex.getTaskId());
         return problem;
     }
@@ -43,7 +45,7 @@ public class GlobalExceptionHandler {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST, "Validation failed for one or more fields");
         problem.setTitle("Validation Error");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         problem.setProperty("errors", errors);
         return problem;
     }
@@ -54,7 +56,7 @@ public class GlobalExceptionHandler {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.BAD_REQUEST, "Malformed JSON request body or invalid enum value");
         problem.setTitle("Malformed Request");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         return problem;
     }
 
@@ -64,7 +66,7 @@ public class GlobalExceptionHandler {
         String detail = String.format("Invalid value '%s' for parameter '%s'", ex.getValue(), ex.getName());
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, detail);
         problem.setTitle("Invalid Parameter");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         problem.setProperty("parameter", ex.getName());
         problem.setProperty("rejectedValue", String.valueOf(ex.getValue()));
         return problem;
@@ -76,7 +78,7 @@ public class GlobalExceptionHandler {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND, "The requested resource path does not exist");
         problem.setTitle("Resource Not Found");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         return problem;
     }
 
@@ -85,7 +87,7 @@ public class GlobalExceptionHandler {
         log.error("Illegal argument: {}", ex.getMessage());
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
         problem.setTitle("Invalid Argument");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         return problem;
     }
 
@@ -94,7 +96,7 @@ public class GlobalExceptionHandler {
         log.error("Illegal state: {}", ex.getMessage());
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
         problem.setTitle("Invalid State Transition");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         return problem;
     }
 
@@ -105,7 +107,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred. Please try again later.");
         problem.setTitle("Internal Server Error");
-        problem.setProperty("timestamp", Instant.now());
+        problem.setProperty(TIMESTAMP, Instant.now());
         return problem;
     }
 

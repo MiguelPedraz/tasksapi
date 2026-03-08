@@ -37,7 +37,6 @@ import io.swagger.v3.oas.annotations.headers.Header;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,11 +52,9 @@ public class TaskController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Create a task", description = "Creates a new task and returns its location")
-    @ApiResponses({
-            @ApiResponse(responseCode = "201", description = "Task created", headers = @Header(name = "Location", description = "URL of the created task"),
-                content = @Content(schema = @Schema(implementation = TaskResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Validation error", content = @Content)
-    })
+    @ApiResponse(responseCode = "201", description = "Task created", headers = @Header(name = "Location", description = "URL of the created task"),
+            content = @Content(schema = @Schema(implementation = TaskResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Validation error", content = @Content)
     public ResponseEntity<TaskResponse> createTask(@Valid @RequestBody TaskRequest request) {
         Task task = taskMapper.requestToDomain(request);
         Task created = taskUseCase.createTask(task);
@@ -96,10 +93,8 @@ public class TaskController {
 
     @GetMapping("/{id}")
     @Operation(summary = "Get task by ID")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Task found", content = @Content(schema = @Schema(implementation = TaskResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
-    })
+    @ApiResponse(responseCode = "200", description = "Task found", content = @Content(schema = @Schema(implementation = TaskResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
     public ResponseEntity<TaskResponse> getTaskById(
             @Parameter(description = "Task UUID") @PathVariable UUID id) {
         Task task = taskUseCase.getTaskById(id);
@@ -108,12 +103,10 @@ public class TaskController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Update a task", description = "Full replacement of task fields")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Task updated",
-                content = @Content(schema = @Schema(implementation = TaskResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Validation error", content = @Content),
-            @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
-    })
+    @ApiResponse(responseCode = "200", description = "Task updated",
+            content = @Content(schema = @Schema(implementation = TaskResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Validation error", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
     public ResponseEntity<TaskResponse> updateTask(
             @Parameter(description = "Task UUID") @PathVariable UUID id,
             @Valid @RequestBody TaskRequest request) {
@@ -124,10 +117,8 @@ public class TaskController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete a task")
-    @ApiResponses({
-            @ApiResponse(responseCode = "204", description = "Task deleted"),
-        @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
-    })
+    @ApiResponse(responseCode = "204", description = "Task deleted")
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
     public ResponseEntity<Void> deleteTask(
             @Parameter(description = "Task UUID") @PathVariable UUID id) {
         taskUseCase.deleteTask(id);
@@ -136,12 +127,10 @@ public class TaskController {
 
     @PatchMapping(value = "/{id}/status", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Change task status")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Status changed",
-                content = @Content(schema = @Schema(implementation = TaskResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid status transition", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
-    })
+    @ApiResponse(responseCode = "200", description = "Status changed",
+            content = @Content(schema = @Schema(implementation = TaskResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Invalid status transition", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
     public ResponseEntity<TaskResponse> changeTaskStatus(
             @Parameter(description = "Task UUID") @PathVariable UUID id,
             @Valid @RequestBody StatusChangeRequest request) {
@@ -151,11 +140,9 @@ public class TaskController {
 
     @PatchMapping(value = "/{id}/assign", consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Assign task to a user")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Task assigned",
-                content = @Content(schema = @Schema(implementation = TaskResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
-    })
+    @ApiResponse(responseCode = "200", description = "Task assigned",
+            content = @Content(schema = @Schema(implementation = TaskResponse.class)))
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
     public ResponseEntity<TaskResponse> assignTask(
             @Parameter(description = "Task UUID") @PathVariable UUID id,
             @Valid @RequestBody AssignRequest request) {
@@ -165,12 +152,10 @@ public class TaskController {
 
     @PatchMapping("/{id}/priority")
     @Operation(summary = "Change task priority")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "Priority changed",
-                content = @Content(schema = @Schema(implementation = TaskResponse.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid priority value", content = @Content),
-        @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
-    })
+    @ApiResponse(responseCode = "200", description = "Priority changed",
+            content = @Content(schema = @Schema(implementation = TaskResponse.class)))
+    @ApiResponse(responseCode = "400", description = "Invalid priority value", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Task not found", content = @Content)
     public ResponseEntity<TaskResponse> changePriority(
             @Parameter(description = "Task UUID") @PathVariable UUID id,
             @Parameter(description = "New priority", required = true) @RequestParam Priority priority) {
