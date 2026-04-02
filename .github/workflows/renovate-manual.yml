@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run Renovate
-        uses: renovatebot/github-action@v46.1.3
+        uses: renovatebot/github-action@v46.1.7
         env:
           # Override schedule so manual runs always execute regardless of configured schedule
           RENOVATE_FORCE: '{"schedule":[]}'
